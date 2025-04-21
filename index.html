@@ -4,7 +4,15 @@
 
 const GIF = "pheo3.gif"
 
-const BACKGROUND_COLOR = "black"
+let BACKGROUND_COLOR = "black"
+
+const params = new URLSearchParams(location.search)
+const URL_COLOR = params.get("bg")
+const v = params.get("v")
+
+if (URL_COLOR) {
+  BACKGROUND_COLOR = URL_COLOR
+}
 
 function sleep (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -17,7 +25,7 @@ async function createGIF (x, y) {
   const gif = await nn.loadImage(GIF)
   GIF_ARRAY.push({obj: nn.create("img")
     .set({
-      src: GIF
+      src: `${GIF}#${Math.random()}`
     })
     .css({
     position: "absolute",
