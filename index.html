@@ -11,6 +11,7 @@ function sleep (ms) {
 }
 
 let GIF_ARRAY = []
+let ROTATION_DEG = 90
   
 async function createGIF (x, y) {
   const gif = await nn.loadImage(GIF)
@@ -31,12 +32,14 @@ async function createGIF (x, y) {
 
 function ph_moves () {
   const length = GIF_ARRAY.length
+  ROTATION_DEG += nn.random(-0.05, 0.05)
   for (let i = 0; i < length; i++) {
     const new_x = GIF_ARRAY[i].x + nn.random(-0.5, 0.5)
     const new_y = GIF_ARRAY[i].y + nn.random(-0.5, 0.5)
     GIF_ARRAY[i].obj.css({
       left: new_x,
-      top: new_y
+      top: new_y,
+      transform: `rotate(${ROTATION_DEG}deg)`
     })
     GIF_ARRAY[i].x = new_x
     GIF_ARRAY[i].y = new_y
@@ -59,7 +62,7 @@ async function setup () {
     const x = center_x + Math.cos(i * s) * r
     await sleep(100)
     createGIF(x, y)
-    r += 20
+    r += 30
   }
   
   setInterval(ph_moves, 1000 / 60)
