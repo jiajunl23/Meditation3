@@ -60,10 +60,10 @@ function ph_moves () {
   }
 }
 
-async function create_half_circle (num, r, center_x, center_y) {
+async function create_circle_w_range (num, r, center_x, center_y, start, end) {
   for (let i = 0; i < num; i++) {
-    const x = center_x + Math.cos(Math.PI * i / num - Math.PI / 2) * r
-    const y = center_y + Math.sin(Math.PI * i / num - Math.PI / 2) * r
+    const x = center_x + Math.cos((end - start) * i / num + start) * r
+    const y = center_y + Math.sin((end - start) * i / num + start) * r
     await sleep(100)
     createGIF(x, y)
   }
@@ -73,12 +73,12 @@ async function main () {
   nn.get("body").css({backgroundColor: BACKGROUND_COLOR})
   let center_x = nn.width / 4
   let center_y = nn.height * 3 / 4
-  create_half_circle(10, 200, center_x, center_y)
+  create_circle_w_range(7, 200, center_x, center_y, 0, Math.PI / 2)
   center_y = nn.height / 4
-  create_half_circle(10, 200, center_x, center_y)
-  center_x = nn.width / 2
+  create_circle_w_range(7, 200, center_x, center_y, - Math.PI / 2, 0)
+  // center_x = nn.width / 2
   center_y = nn.height / 2
-  create_half_circle(10, 200, center_x, center_y)
+  create_circle_w_range(10, 200, center_x, center_y, - Math.PI / 2, Math.PI / 2)
   setInterval(ph_moves, 1000 / 60)
 }
   
