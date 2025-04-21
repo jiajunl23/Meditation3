@@ -59,14 +59,18 @@ async function createGIF (x, y) {
     }
     
     if (evade_option === 2) {
-      const new_x = GIF_ARRAY[current_length - 1].x - 100
-      const new_y = GIF_ARRAY[current_length - 1].y - 100
+      const front_or_back = Math.round(nn.random(1, 2))
+      let new_x = GIF_ARRAY[current_length - 1].x
+      if (front_or_back === 1) {
+        new_x -= 100
+      }
+      if (front_or_back === 2) {
+        new_x += 100
+      }
       GIF_ARRAY[current_length - 1].obj.css({
                       left: new_x,
-                      top: new_y,
                       })
       GIF_ARRAY[current_length - 1].x = new_x
-      GIF_ARRAY[current_length - 1].y = new_y
     }
   })
 }
