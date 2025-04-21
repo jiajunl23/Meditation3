@@ -30,7 +30,7 @@ async function createGIF (x, y) {
   const gif = await nn.loadImage(GIF)
   GIF_ARRAY.push({obj: nn.create("img")
                         .set({
-                          src: `${GIF}#${Math.random()}`
+                          src: `${GIF}?desync=${Math.random()}`
                         })
                         .css({
                           position: "absolute",
