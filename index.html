@@ -71,14 +71,17 @@ async function create_circle_w_range (num, r, center_x, center_y, start, end) {
   
 async function main () {
   nn.get("body").css({backgroundColor: BACKGROUND_COLOR})
-  let center_x = nn.width / 4
+  let center_x = nn.width / 2
   let center_y = nn.height * 3 / 4
   create_circle_w_range(7, 200, center_x, center_y, 0, Math.PI / 2)
   center_y = nn.height / 4
   create_circle_w_range(7, 200, center_x, center_y, - Math.PI / 2, 0)
   // center_x = nn.width / 2
   center_y = nn.height / 2
-  create_circle_w_range(10, 200, center_x, center_y, - Math.PI / 2, Math.PI / 2)
+  center_x = nn.width / 3
+  create_circle_w_range(10, 300, center_x, center_y, - Math.PI / 3, Math.PI / 3)
+  
+  // create_circle_w_range(10, 300, center_x, center_y, - Math.PI / 3, Math.PI / 3)
   setInterval(ph_moves, 1000 / 60)
 }
   
