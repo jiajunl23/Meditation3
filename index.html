@@ -8,10 +8,15 @@ let BACKGROUND_COLOR = "black"
 
 const params = new URLSearchParams(location.search)
 const URL_COLOR = params.get("bg")
-const v = params.get("v")
+let V = 2
+URL_V = params.get("v")
 
 if (URL_COLOR) {
   BACKGROUND_COLOR = URL_COLOR
+}
+
+if (URL_V) {
+  V = URL_V
 }
 
 function sleep (ms) {
@@ -64,24 +69,30 @@ async function create_circle_w_range (num, r, center_x, center_y, start, end) {
   for (let i = 0; i < num; i++) {
     const x = center_x + Math.cos((end - start) * i / num + start) * r
     const y = center_y + Math.sin((end - start) * i / num + start) * r
-    await sleep(100)
+    await sleep(10)
     createGIF(x, y)
   }
 }
   
 async function main () {
-  nn.get("body").css({backgroundColor: BACKGROUND_COLOR})
-  let center_x = nn.width / 2
-  let center_y = nn.height * 3 / 4
-  create_circle_w_range(7, 200, center_x, center_y, 0, Math.PI / 2)
-  center_y = nn.height / 4
-  create_circle_w_range(7, 200, center_x, center_y, - Math.PI / 2, 0)
-  // center_x = nn.width / 2
-  center_y = nn.height / 2
-  center_x = nn.width / 3
-  create_circle_w_range(10, 300, center_x, center_y, - Math.PI / 3, Math.PI / 3)
+  if (V === 1) {
+    nn.get("body").css({backgroundColor: BACKGROUND_COLOR})
+    let center_x = nn.width / 2
+    let center_y = nn.height * 3 / 4
+    create_circle_w_range(7, 200, center_x, center_y, 0, Math.PI / 2)
+    center_y = nn.height / 4
+    create_circle_w_range(7, 200, center_x, center_y, - Math.PI / 2, 0)
+    center_y = nn.height / 2
+    center_x = nn.width / 3
+    create_circle_w_range(10, 300, center_x, center_y, - Math.PI / 3, Math.PI / 3)
+  }
   
-  // create_circle_w_range(10, 300, center_x, center_y, - Math.PI / 3, Math.PI / 3)
+  if (V === 2) {
+    nn.get("body").css({backgroundColor: BACKGROUND_COLOR})
+    let center_x = 0
+    let center_y = nn.height / 2
+    create_circle_w_range(20, nn.height / 2, center_x, center_y, - Math.PI / 3, Math.PI / 3)
+  }
   setInterval(ph_moves, 1000 / 60)
 }
   
