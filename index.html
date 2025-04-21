@@ -8,8 +8,8 @@ let BACKGROUND_COLOR = "black"
 
 const params = new URLSearchParams(location.search)
 const URL_COLOR = params.get("bg")
-let V = 2
-URL_V = params.get("v")
+let V = "multilayer"
+const URL_V = params.get("v")
 
 if (URL_COLOR) {
   BACKGROUND_COLOR = URL_COLOR
@@ -41,17 +41,31 @@ async function createGIF (x, y) {
     transformOrigin: "center center",
     transition: "all 1s"
   })
-    .addTo("body"), x: x - gif.width / 2, y: y - gif.height / 2, width: gif.width, opacity: 1, original_width: gif.width})
+    .addTo("body"), x: x - gif.width / 2, y: y - gif.height / 2, width: gif.width, opacity: 0.8, original_width: gif.width})
+  
+  const current_length = GIF_ARRAY.length
+  
+  GIF_ARRAY[current_length - 1].obj.on("mouseover", () => {
+    const new_width = GIF_ARRAY[current_length - 1].width * 0.1
+    const new_opacity = new_width / GIF_ARRAY[current_length - 1].original_width * 0.8
+    GIF_ARRAY[current_length - 1].obj.css({
+                    width: new_width,
+                    opacity: new_opacity
+                    })
+    GIF_ARRAY[current_length - 1].width = new_width
+    GIF_ARRAY[current_length - 1].opacity = new_opacity
+  })
+  
 }
 
 function ph_moves () {
   const length = GIF_ARRAY.length
   ROTATION_DEG += nn.random(-0.1, 0.1)
   for (let i = 0; i < length; i++) {
-    const new_x = GIF_ARRAY[i].x + nn.random(-1, 1)
-    const new_y = GIF_ARRAY[i].y + nn.random(-1, 1)
-    const new_width = GIF_ARRAY[i].width + nn.random(-1, 1)
-    const new_opacity = Math.min(1, new_width / GIF_ARRAY[i].original_width)
+    const new_x = Math.max(0, Math.min(nn.width, GIF_ARRAY[i].x + nn.random(-2, 2)))
+    const new_y = Math.max(0, Math.min(nn.height, GIF_ARRAY[i].y + nn.random(-2, 2)))
+    const new_width = GIF_ARRAY[i].width + nn.random(-2, 2)
+    const new_opacity = Math.min(1, new_width / GIF_ARRAY[i].original_width * 0.8)
     GIF_ARRAY[i].obj.css({
       left: new_x,
       top: new_y,
@@ -75,7 +89,14 @@ async function create_circle_w_range (num, r, center_x, center_y, start, end) {
 }
   
 async function main () {
-  if (V === 1) {
+  if (V === "default") {
+    nn.get("body").css({backgroundColor: BACKGROUND_COLOR})
+    let center_x = Math.max(0, (nn.width - nn.height) / 2)
+    let center_y = nn.height / 2
+    create_circle_w_range(20, nn.height / 2, center_x, center_y, - Math.PI / 3, Math.PI / 3)
+  }
+
+  if (V === "multilayer") {
     nn.get("body").css({backgroundColor: BACKGROUND_COLOR})
     let center_x = nn.width / 2
     let center_y = nn.height * 3 / 4
@@ -86,14 +107,7 @@ async function main () {
     center_x = nn.width / 3
     create_circle_w_range(10, 300, center_x, center_y, - Math.PI / 3, Math.PI / 3)
   }
-  
-  if (V === 2) {
-    nn.get("body").css({backgroundColor: BACKGROUND_COLOR})
-    let center_x = 0
-    let center_y = nn.height / 2
-    create_circle_w_range(20, nn.height / 2, center_x, center_y, - Math.PI / 3, Math.PI / 3)
-  }
-  setInterval(ph_moves, 1000 / 60)
+  setInterval(ph_moves, 1000 / 120)
 }
   
 nn.on("load", main)
