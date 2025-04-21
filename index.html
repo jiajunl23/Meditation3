@@ -1,0 +1,19 @@
+<script src="https://cdn.jsdelivr.net/gh/netizenorg/netnet-standard-library/build/nn.min.js"></script>
+<script>
+/* global nn */
+
+const GIF = "ph2.gif"
+
+const BACKGROUND_COLOR = "black"
+
+async function createGIF (x, y) {
+  const gif = await nn.loadImage(GIF)
+}
+  
+async function setup () {
+  nn.get("body").css({backgroundColor: COLOR})
+  
+  const gif = await nn.loadImage(GIF)
+}
+
+</script>
