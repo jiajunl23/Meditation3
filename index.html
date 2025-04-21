@@ -2,15 +2,19 @@
 <script>
 /* global nn */
 
-const GIF = "ph2.gif"
+const GIF = "pheo3.gif"
 
 const BACKGROUND_COLOR = "black"
+
+function sleep (ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
 
 async function createGIF (x, y) {
   const gif = await nn.loadImage(GIF)
   nn.create("img")
     .set({
-      src: `${GIF}#${Math.random()}`
+      src: GIF
     })
     .css({
     position: "absolute",
@@ -35,6 +39,7 @@ async function setup () {
     const s = 0.5
     const y = center_y + Math.sin(i * s) * r
     const x = center_x + Math.cos(i * s) * r
+    await sleep(1000)
     createGIF(x, y)
   }
 }
