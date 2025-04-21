@@ -8,12 +8,37 @@ const BACKGROUND_COLOR = "black"
 
 async function createGIF (x, y) {
   const gif = await nn.loadImage(GIF)
+  nn.create("img")
+    .set({
+      src: `${GIF}#${Math.random()}`
+    })
+    .css({
+    position: "absolute",
+    left: x - gif.width / 2,
+    top: y - gif.height / 2,
+    imageRendering: "pixelated"
+  })
+    .addTo("body")
 }
   
 async function setup () {
-  nn.get("body").css({backgroundColor: COLOR})
+  nn.get("body").css({backgroundColor: BACKGROUND_COLOR})
   
   const gif = await nn.loadImage(GIF)
+  
+  const num_gifs = 10
+  
+  for (let i = 0; i < num_gifs; i++) {
+    const center_x = nn.width / 2
+    const center_y = nn.height / 2
+    const r = 200
+    const s = 0.5
+    const y = center_y + Math.sin(i * s) * r
+    const x = center_x + Math.cos(i * s) * r
+    createGIF(x, y)
+  }
 }
+  
+nn.on("load", setup)
 
 </script>
