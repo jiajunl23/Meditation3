@@ -29,19 +29,24 @@ let ROTATION_DEG = 90
 async function createGIF (x, y) {
   const gif = await nn.loadImage(GIF)
   GIF_ARRAY.push({obj: nn.create("img")
-    .set({
-      src: `${GIF}#${Math.random()}`
-    })
-    .css({
-    position: "absolute",
-    left: x - gif.width / 2,
-    top: y - gif.height / 2,
-    imageRendering: "pixelated",
-    transform: "rotate(90deg)",
-    transformOrigin: "center center",
-    transition: "all 1s"
-  })
-    .addTo("body"), x: x - gif.width / 2, y: y - gif.height / 2, width: gif.width, opacity: 0.8, original_width: gif.width})
+                        .set({
+                          src: `${GIF}#${Math.random()}`
+                        })
+                        .css({
+                          position: "absolute",
+                          left: x - gif.width / 2,
+                          top: y - gif.height / 2,
+                          imageRendering: "pixelated",
+                          transform: "rotate(90deg)",
+                          transformOrigin: "center center",
+                          transition: "all 1s"
+                        })
+                        .addTo("body"), 
+                x: x - gif.width / 2, 
+                y: y - gif.height / 2, 
+                width: gif.width, 
+                opacity: 0.8, 
+                original_width: gif.width})
   
   const current_length = GIF_ARRAY.length
   
@@ -51,9 +56,9 @@ async function createGIF (x, y) {
       const new_width = Math.max(GIF_ARRAY[current_length - 1].original_width / 3, GIF_ARRAY[current_length - 1].width * 0.9)
       const new_opacity = new_width / GIF_ARRAY[current_length - 1].original_width * 0.8
       GIF_ARRAY[current_length - 1].obj.css({
-                      width: new_width,
-                      opacity: new_opacity
-                      })
+                                          width: new_width,
+                                          opacity: new_opacity
+                                    })
       GIF_ARRAY[current_length - 1].width = new_width
       GIF_ARRAY[current_length - 1].opacity = new_opacity
     }
@@ -81,15 +86,15 @@ function ph_moves () {
   for (let i = 0; i < length; i++) {
     const new_x = Math.max(0, Math.min(nn.width, GIF_ARRAY[i].x + nn.random(-2, 2)))
     const new_y = Math.max(0, Math.min(nn.height, GIF_ARRAY[i].y + nn.random(-2, 2)))
-    const new_width = Math.max(GIF_ARRAY[i].original_width / 3, GIF_ARRAY[i].width + nn.random(-2, 2))
+    const new_width = Math.min(500, Math.max(GIF_ARRAY[i].original_width / 3, GIF_ARRAY[i].width + nn.random(-2, 2)))
     const new_opacity = Math.min(1, new_width / GIF_ARRAY[i].original_width * 0.8)
     GIF_ARRAY[i].obj.css({
-      left: new_x,
-      top: new_y,
-      transform: `rotate(${ROTATION_DEG}deg)`,
-      width: new_width,
-      opacity: new_opacity
-    })
+                          left: new_x,
+                          top: new_y,
+                          transform: `rotate(${ROTATION_DEG}deg)`,
+                          width: new_width,
+                          opacity: new_opacity
+                  })
     GIF_ARRAY[i].x = new_x 
     GIF_ARRAY[i].y = new_y
     GIF_ARRAY[i].width = new_width
