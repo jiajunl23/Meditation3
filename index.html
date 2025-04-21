@@ -8,7 +8,7 @@ let BACKGROUND_COLOR = "black"
 
 const params = new URLSearchParams(location.search)
 const URL_COLOR = params.get("bg")
-let V = "multilayer"
+let V = "default"
 const URL_V = params.get("v")
 
 if (URL_COLOR) {
@@ -46,16 +46,29 @@ async function createGIF (x, y) {
   const current_length = GIF_ARRAY.length
   
   GIF_ARRAY[current_length - 1].obj.on("mouseover", () => {
-    const new_width = GIF_ARRAY[current_length - 1].width * 0.1
-    const new_opacity = new_width / GIF_ARRAY[current_length - 1].original_width * 0.8
-    GIF_ARRAY[current_length - 1].obj.css({
-                    width: new_width,
-                    opacity: new_opacity
-                    })
-    GIF_ARRAY[current_length - 1].width = new_width
-    GIF_ARRAY[current_length - 1].opacity = new_opacity
+    const evade_option = Math.round(nn.random(1.3, 2))
+    if (evade_option === 1) {
+      const new_width = Math.max(GIF_ARRAY[current_length - 1].original_width / 3, GIF_ARRAY[current_length - 1].width * 0.9)
+      const new_opacity = new_width / GIF_ARRAY[current_length - 1].original_width * 0.8
+      GIF_ARRAY[current_length - 1].obj.css({
+                      width: new_width,
+                      opacity: new_opacity
+                      })
+      GIF_ARRAY[current_length - 1].width = new_width
+      GIF_ARRAY[current_length - 1].opacity = new_opacity
+    }
+    
+    if (evade_option === 2) {
+      const new_x = GIF_ARRAY[current_length - 1].x - 100
+      const new_y = GIF_ARRAY[current_length - 1].y - 100
+      GIF_ARRAY[current_length - 1].obj.css({
+                      left: new_x,
+                      top: new_y,
+                      })
+      GIF_ARRAY[current_length - 1].x = new_x
+      GIF_ARRAY[current_length - 1].y = new_y
+    }
   })
-  
 }
 
 function ph_moves () {
@@ -64,7 +77,7 @@ function ph_moves () {
   for (let i = 0; i < length; i++) {
     const new_x = Math.max(0, Math.min(nn.width, GIF_ARRAY[i].x + nn.random(-2, 2)))
     const new_y = Math.max(0, Math.min(nn.height, GIF_ARRAY[i].y + nn.random(-2, 2)))
-    const new_width = GIF_ARRAY[i].width + nn.random(-2, 2)
+    const new_width = Math.max(GIF_ARRAY[i].original_width / 3, GIF_ARRAY[i].width + nn.random(-2, 2))
     const new_opacity = Math.min(1, new_width / GIF_ARRAY[i].original_width * 0.8)
     GIF_ARRAY[i].obj.css({
       left: new_x,
