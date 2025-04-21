@@ -10,9 +10,11 @@ function sleep (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+let GIF_ARRAY = []
+  
 async function createGIF (x, y) {
   const gif = await nn.loadImage(GIF)
-  nn.create("img")
+  GIF_ARRAY.push({obj: nn.create("img")
     .set({
       src: GIF
     })
@@ -20,9 +22,25 @@ async function createGIF (x, y) {
     position: "absolute",
     left: x - gif.width / 2,
     top: y - gif.height / 2,
-    imageRendering: "pixelated"
+    imageRendering: "pixelated",
+    transform: "rotate(90deg)",
+    transformOrigin: "center center"
   })
-    .addTo("body")
+    .addTo("body"), x: x - gif.width / 2, y: y - gif.height / 2})
+}
+
+function ph_moves () {
+  const length = GIF_ARRAY.length
+  for (let i = 0; i < length; i++) {
+    const new_x = GIF_ARRAY[i].x + nn.random(-0.5, 0.5)
+    const new_y = GIF_ARRAY[i].y + nn.random(-0.5, 0.5)
+    GIF_ARRAY[i].obj.css({
+      left: new_x,
+      top: new_y
+    })
+    GIF_ARRAY[i].x = new_x
+    GIF_ARRAY[i].y = new_y
+  }
 }
   
 async function setup () {
@@ -30,18 +48,21 @@ async function setup () {
   
   const gif = await nn.loadImage(GIF)
   
-  const num_gifs = 10
+  const num_gifs = 15
+  let r = 100
   
   for (let i = 0; i < num_gifs; i++) {
     const center_x = nn.width / 2
     const center_y = nn.height / 2
-    const r = 200
-    const s = 0.5
+    let s = 0.5
     const y = center_y + Math.sin(i * s) * r
     const x = center_x + Math.cos(i * s) * r
-    await sleep(1000)
+    await sleep(100)
     createGIF(x, y)
+    r += 20
   }
+  
+  setInterval(ph_moves, 1000 / 60)
 }
   
 nn.on("load", setup)
